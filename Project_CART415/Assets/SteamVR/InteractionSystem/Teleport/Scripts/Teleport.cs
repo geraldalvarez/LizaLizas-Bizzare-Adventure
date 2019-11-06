@@ -786,6 +786,8 @@ namespace Valve.VR.InteractionSystem
 		private void PlayAudioClip( AudioSource source, AudioClip clip )
 		{
 			source.clip = clip;
+            //added
+            source.volume = 0.2f;
 			source.Play();
 		}
 
