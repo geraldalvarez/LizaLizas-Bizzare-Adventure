@@ -30,14 +30,14 @@ public class Sound
     public float spatialBlend;
 
     [Header("Min Distance of 3D Audio")]
-    public int minDistance = 0;
+    public float minDistance = 0;
 
     [Header("Max Distance of 3D Audio")]
-    public int maxDistance = 2;
+    public float maxDistance = 2;
 
     [Header("Type of Rolloff Mode")]
-    public int rolloffMode = 0;
+    public int rolloffMode = 1;
 
-    [HideInInspector]
+    //[HideInInspector]
     public AudioSource source;
 }
