@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/DenialStage.unity
+    guid: 7deb182c0ad108c458e435d13340cb09
+  - enabled: 1
+    path: Assets/Scenes/AngerStage.unity
+    guid: 22b16ef95dda95a42a7ffed95e142e13
   m_configObjects: {}

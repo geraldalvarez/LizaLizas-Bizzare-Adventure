@@ -4,11 +4,7 @@ using UnityEngine;
 
 public class NPCSelectionResponse : MonoBehaviour, ISelectionResponse
 {
-
-    //reference to all the selectable npc
-    ConversationSequence[] conversationSequences;
-
-    private bool onConversation = false;
+    ConversationStates conversationStates;
 
     void ISelectionResponse.OnDeselect(Transform selection)
     {
@@ -17,13 +13,12 @@ public class NPCSelectionResponse : MonoBehaviour, ISelectionResponse
 
     void ISelectionResponse.OnSelect(Transform selection)
     {
-        for (int i = 0; i < conversationSequences.Length; i++)
-        {
-            if (conversationSequences[i].transform == selection)
-            {
-                conversationSequences[i].InitiateConversation();
-            }
-        }
+        //if (conversationStates.IsOnConversation() == false)
+        //{
+            //selection.GetComponent<ConversationSequence>().InitiateConversation();
+        //}
+
+        selection.GetComponent<ConversationSequence>().InitiateConversation();        
     }
 
     void Awake()
@@ -34,14 +29,6 @@ public class NPCSelectionResponse : MonoBehaviour, ISelectionResponse
     // Start is called before the first frame update
     void Start()
     {
-        //get and set the conversation sequences into the conversationSequences array
-        conversationSequences = GameObject.FindObjectsOfType<ConversationSequence>();
+        conversationStates = GameObject.Find("ConversationStates").GetComponent<ConversationStates>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
 }

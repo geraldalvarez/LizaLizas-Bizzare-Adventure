@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConversationSequence : MonoBehaviour, IObserver
+public class ConversationSequence : MonoBehaviour
 {
-
     //distance in which the player can interact with this npc
     public float interactableDistance = 1.5f;
 
     //can player interacts with this npc
     public bool isInteractable = true;
 
+    private bool conversationComplete = false;
+
     //conversation state
     private bool startConversation = false;
 
-    //onselect from the NPCSelectionResponse
-    private bool OnSelect = false;
+    private Conversation converse;
 
     //player's head transform
     private Transform playerHead;
@@ -38,19 +38,12 @@ public class ConversationSequence : MonoBehaviour, IObserver
     //boolean for indicating if the npc/player is currently playing its dialogue clip
     private bool isDialoguePlaying = false;
 
-    //string current dialogue playing
 
     private string dialogueNamePlaying = "";
-
-    //the IObservable Subject
-    //private IObservable selectionResponseObservale;
 
 
     void Awake()
     {
-        //find and set the IObservable subject
-        //selectionResponseObservale = GameObject.Find("SelectionManager").GetComponent<IObservable>();
-
         //player's head transform
         playerHead = GameObject.Find("FollowHead").GetComponent<Transform>();
 
@@ -59,14 +52,13 @@ public class ConversationSequence : MonoBehaviour, IObserver
 
         emptyDialogue = new Dialogue();
 
+        converse = GameObject.Find("ConversationStates").GetComponent<Conversation>();
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        //add this npc as a watcher for the observable subject
-        //selectionResponseObservale.Add(this);
-
         //function that deconstrcut the 1D array "dialogues" into 2D array "DialogueLinesTree"
         ConstructDialogueLines();
 
@@ -84,6 +76,7 @@ public class ConversationSequence : MonoBehaviour, IObserver
         //check if player initiated the conversation
         if (startConversation)
         {
+            
             bool inRange = InInteractableDistance(transform, playerHead, interactableDistance);
 
             if (!isDialoguePlaying)
@@ -95,6 +88,7 @@ public class ConversationSequence : MonoBehaviour, IObserver
             }
             else
             {
+
                 //check if the corresponding dialogue clip is not playing
                 if (IsDialogueClipPlaying(dialogueNamePlaying) == false)
                 {
@@ -108,22 +102,18 @@ public class ConversationSequence : MonoBehaviour, IObserver
                     {
                         print("End of the conversation");
                         startConversation = false;
+                        isInteractable = false;
+                        conversationComplete = true;
+                        converse.SetOnConversation(false);
+
                     }
 
                 }
             }
+        }
 
-            /*
-            //stop dialogueClip if the player is too far
-            if (InInteractableDistance(transform, playerHead, (interactableDistance * 1.5f)))
-            {
-                if (dialogueNamePlaying != "")
-                {
-                    StopDialogueClip(dialogueNamePlaying);
-                    isDialoguePlaying = false;
-                }
-            }
-            */
+        if(dialogueClipCounter > (dialogueLinesTree.GetUpperBound(0) + 1) && startConversation == false)
+        {
 
         }
 
@@ -177,17 +167,10 @@ public class ConversationSequence : MonoBehaviour, IObserver
         audioManager.Stop(name);
     }
 
-    void IObserver.update()
+    public bool GetConversationComplete()
     {
-        /*
-        //check if selected npc is this
-        if (selectionResponseObservale.GetSelection() == this.transform)
-        {
-            startConversation = true;
-        }
-        */
+        return conversationComplete;
     }
-
 
     public bool GetStartConversation()
     {
@@ -199,16 +182,6 @@ public class ConversationSequence : MonoBehaviour, IObserver
         startConversation = f;
     }
 
-    public bool GetOnSelect()
-    {
-        return OnSelect;
-    }
-
-    public void SetOnSelect(bool f)
-    {
-        OnSelect = f;
-    }
-
     public bool InInteractableDistance(Transform subjectA, Transform subjectB, float interactableDistance)
     {
         float dist = Vector3.Distance(subjectA.position, subjectB.position);
@@ -218,10 +191,14 @@ public class ConversationSequence : MonoBehaviour, IObserver
     //function is called from the NPCSlectionResponse 
     public void InitiateConversation()
     {
-        //check if the player is within the interactacle distance
-        if (InInteractableDistance(transform, playerHead, interactableDistance))
+        if (converse.GetOnConversation() == false && isInteractable)
         {
-            startConversation = true;
+            //check if the player is within the interactacle distance
+            if (InInteractableDistance(transform, playerHead, interactableDistance))
+            {
+                startConversation = true;
+                converse.SetOnConversation(true);
+            }
         }
     }
 
@@ -242,7 +219,6 @@ public class ConversationSequence : MonoBehaviour, IObserver
         //instantiate the dialogueLines with the proper dimension
         dialogueLinesTree = new Dialogue[(dialogueLinesLength + 1), 3];
 
-
         //populate the matrix with empty dialogue
         for (int n = 0; n < dialogueLinesTree.GetUpperBound(0) + 1; n++)
         {
@@ -251,7 +227,6 @@ public class ConversationSequence : MonoBehaviour, IObserver
                 dialogueLinesTree[n, m] = emptyDialogue;
             }
         }
-
 
         //setting the dialogues in the dialogueLinesTree
         for (int l = 0; l < dialogues.Length; l++)
