@@ -129,6 +129,67 @@ public class ConversationSequence : MonoBehaviour
             {
                 if (inRange)
                 {
+                    //extract the 't' in the column array
+                    if (dialogueLinesTree[dialogueClipCounter, i].dialogueChoice == 't')
+                    {
+                        //play the dialogue clip
+                        audioManager.Play(dialogueLinesTree[dialogueClipCounter, i].dialogueName);
+
+                        //store the name
+                        dialogueNamePlaying = dialogueLinesTree[dialogueClipCounter, i].dialogueName;
+                    }
+                    else
+                    {
+                        //extract the 't' in the column array
+                        if (dialogueLinesTree[dialogueClipCounter, i].dialogueChoice == 'n' && dialogueLinesTree[dialogueClipCounter, i].dialogueChoice != 'x')
+                        {
+                            //play the dialogue clip
+                            audioManager.Play(dialogueLinesTree[dialogueClipCounter, i].dialogueName);
+
+                            //store the name
+                            dialogueNamePlaying = dialogueLinesTree[dialogueClipCounter, i].dialogueName;
+                        }
+                    }
+                }
+                else
+                {
+                    if (dialogueLinesTree[dialogueClipCounter, i].dialogueChoice == 'f')
+                    {
+                        //play the dialogue clip
+                        audioManager.Play(dialogueLinesTree[dialogueClipCounter, i].dialogueName);
+
+                        //store the name
+                        dialogueNamePlaying = dialogueLinesTree[dialogueClipCounter, i].dialogueName;
+                    }
+                    else
+                    {
+                        //extract the 'n' in the column array
+                        if (dialogueLinesTree[dialogueClipCounter, i].dialogueChoice == 'n' && dialogueLinesTree[dialogueClipCounter, i].dialogueChoice != 'x')
+                        {
+                            //play the dialogue clip
+                            audioManager.Play(dialogueLinesTree[dialogueClipCounter, i].dialogueName);
+
+                            //store the name
+                            dialogueNamePlaying = dialogueLinesTree[dialogueClipCounter, i].dialogueName;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    /*
+        public void PlayDialogueClip(bool inRange)
+    {
+
+        if (dialogueClipCounter < (dialogueLinesTree.GetUpperBound(0) + 1))
+        {
+
+            for (int i = 0; i < dialogueLinesTree.GetUpperBound(1) + 1; i++)
+            {
+                if (inRange)
+                {
                     //extract the 'n' or 't' in the column array
                     if (dialogueLinesTree[dialogueClipCounter, i].dialogueChoice == 'n' || dialogueLinesTree[dialogueClipCounter, i].dialogueChoice == 't')
                     {
@@ -153,7 +214,8 @@ public class ConversationSequence : MonoBehaviour
             }
         }
 
-    }
+    } 
+    */
 
     public bool IsDialogueClipPlaying(string name)
     {
@@ -247,5 +309,10 @@ public class ConversationSequence : MonoBehaviour
                 dialogueLinesTree[dialogues[l].dialogueIndex, 2] = dialogues[l];
             }
         }
+    }
+
+    public int GetCurrentIndex()
+    {
+        return dialogueClipCounter;
     }
 }

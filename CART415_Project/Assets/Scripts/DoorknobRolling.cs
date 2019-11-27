@@ -9,6 +9,7 @@ public class DoorknobRolling : MonoBehaviour
     public ConversationSequence alterConversation;
     public Transform startPoint;
     public Transform targetPoint;
+    public NpcGlare npcGlare;
 
     private bool animatingDrop = false;
     private bool animatingRoll = false;
@@ -16,6 +17,8 @@ public class DoorknobRolling : MonoBehaviour
     private float dropTime = .5f;
     private float rollTime = 8f;
 
+    private int indexFlag = 3;
+    private bool startAnimation = false;
 
     void Awake()
     {
@@ -39,8 +42,10 @@ public class DoorknobRolling : MonoBehaviour
 
     void DoorknobAnimation()
     {
-       
-        if (alterConversation.GetConversationComplete())
+        if (alterConversation.GetCurrentIndex() == indexFlag)
+            startAnimation = true;
+
+        if (startAnimation)
         {
             animatingDrop = true;
             if (animatingDrop == true)
@@ -60,6 +65,8 @@ public class DoorknobRolling : MonoBehaviour
             {
                 transitionScene.SetActive(true);
             }
+
+            npcGlare.AllHeadTurn(true);
         }
     }
 

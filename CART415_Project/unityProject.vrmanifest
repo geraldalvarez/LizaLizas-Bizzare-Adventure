@@ -5,7 +5,7 @@
       "app_key": "application.generated.unity.doorknob.exe",
       "launch_type": "url",
       "url": "steam://launch/",
-      "action_manifest_path": "G:\\CART415\\Doorknob\\Assets\\StreamingAssets\\SteamVR\\actions.json",
+      "action_manifest_path": "G:\\CART415\\CART415_Project\\Assets\\StreamingAssets\\SteamVR\\actions.json",
       "strings": {
         "en_us": {
           "name": "Doorknob [Testing]"

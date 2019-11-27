@@ -30,13 +30,18 @@ public class TurnHead : MonoBehaviour
         else
         {
             //reset
-            transform.localRotation = originalHeadRotation;
+            ResetHead();
         }
     }
 
-    private void LookAt()
+    public void LookAt()
     {
         Vector3 relativePos = playerHead.position - npcHead.position;
         npcHead.rotation = Quaternion.LookRotation(relativePos);
+    }
+
+    public void ResetHead()
+    {
+        transform.localRotation = originalHeadRotation;
     }
 }
